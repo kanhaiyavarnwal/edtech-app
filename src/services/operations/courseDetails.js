@@ -1,0 +1,369 @@
+import { courseEndpoints } from "../api";
+import {apiConnectors} from "../apiconnectors"
+import {toast} from "react-hot-toast"
+import { updateCompletedLectures } from "../../slices/viewCourseSlice"
+const {
+     CREATE_COURSE_API,
+     EDIT_COURSE_API,
+     COURSE_DETAILS_API ,
+     GET_ALL_INSTRUCTOR_COURSES_API,
+     DELETE_COURSE_API,
+     GET_FULL_COURSE_DETAILS_API_AUTHENTICATED,
+     LECTURE_COMPLETED_API,
+     CREATE_RATING_API,
+     GET_ALL_COURSES_API,
+     CREATE_SECTION_API ,
+     CREATE_SUBSECTION_API,
+     UPDATE_SECTION_API ,
+     UPDATE_SUBSECTION_API,
+     DELETE_SECTION_API,
+     DELETE_SUBSECTION_API,
+
+
+} = courseEndpoints
+
+
+export const getAllCourses = async () =>{
+    const toastId = toast.loading("Loading...")
+    let result = []
+    try{
+     const response = await apiConnectors("GET",GET_ALL_COURSES_API)
+     
+     if(!response?.data?.success){
+        throw new Error("could not fetch all courses")
+     }
+      result = response?.data?.data
+
+    }catch(err){
+     console.log("get all course api error: ",err.message)
+     toast.error(err.message)
+    }
+    toast.dismiss(toastid)
+    return result;
+}
+
+export const fetchCourseDetails = async(courseId)=>{
+      const toastId = toast.loading("Loading...")
+       let result = null
+
+       try{
+        const response = await apiConnectors("GET", COURSE_DETAILS_API,{
+            courseId,
+        })
+        console.log("course details api res: ",response)
+
+        if (!response.data.success) {
+         throw new Error(response.data.message)
+       }
+       result = response.data
+
+       }catch(err){
+        console.log("course details api error : ",err.message)
+         result = error.response.data
+       }
+        toast.dismiss(toastId)
+        return result
+}
+
+// fetch course category
+
+export const addCourseDetails = async(data,token)=>{
+    let result = null
+     const toastId = toast.loading("Loading...")
+
+     try{
+        const response = await apiConnectors("POST", CREATE_COURSE_API,DataTransfer,{
+               "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+        })
+    console.log("response of add course : ",response)
+
+     if (!response?.data?.success) {
+      throw new Error("Could Not Add Course Details")
+    }
+        toast.success("Course Details Added Successfully")
+       result = response?.data?.data
+
+
+     }catch(err){
+      console.log("create course api err: ",err.message)
+      toast.error(err.message)
+     }
+}
+
+export const editCourseDetails = async( data,token)=>{
+    let result = null
+  const toastId = toast.loading("Loading...")
+
+  try {
+    const response = await apiConnector("POST", EDIT_COURSE_API, data, {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("edit course api response: ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Update Course Details")
+    }
+    toast.success("Course Details Updated Successfully")
+    result = response?.data?.data
+}catch(err){
+  console.log("edit course api err: ",err.message)
+  toast.error(err.message)
+}
+ toast.dismiss(toastId)
+  return result
+
+}
+
+export const createSection = async(data , token)=>{
+     let result = null
+  const toastId = toast.loading("Loading...")
+
+  try {
+    const response = await apiConnector("POST", CREATE_SECTION_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("crete section api :  ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Create Section")
+    }
+    toast.success("Course Section Created")
+    result = response?.data?.updatedCourse
+  } catch (err) {
+    console.log("create section api err:  ", error.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+  return result
+}
+
+export const createSubSection = async(data,token)=>{
+    let result = null
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector("POST", CREATE_SUBSECTION_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("create subsectionapi: ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Add Lecture")
+    }
+    toast.success("Lecture Added")
+    result = response?.data?.data
+  } catch (err) {
+    console.log("create subsection api err", err.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+  return result
+}
+
+export const updateSection = async(data,token)=>{
+     let result = null
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector("POST",UPDATE_SECTION_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("update section api response:   ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Update Section")
+    }
+    toast.success("Course Section Updated")
+    result = response?.data?.data
+  } catch (err) {
+    console.log("update section err", err.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+  return result
+}
+
+export const updateSubSection = async (data, token) => {
+  let result = null
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector("POST", UPDATE_SUBSECTION_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("update subSection response:  ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Update Lecture")
+    }
+    toast.success("Lecture Updated")
+    result = response?.data?.data
+  } catch (err) {
+    console.log("update subsection response  err:  ", err.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+  return result
+}
+
+
+export const deleteSection = async (data, token) => {
+  let result = null
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector("POST", DELETE_SECTION_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("delete section apiresponse : ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Delete Section")
+    }
+    toast.success("Course Section Deleted")
+    result = response?.data?.data
+  } catch (err) {
+    console.log("deleted section err :  ", err.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+  return result
+}
+
+
+export const deleteSubSection = async (data, token) => {
+  let result = null
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector("POST", DELETE_SUBSECTION_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("delete subsection api response:  ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Delete Lecture")
+    }
+    toast.success("Lecture Deleted")
+    result = response?.data?.data
+  } catch (err) {
+    console.log("deleted subsection err: ", err.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+  return result
+}
+
+export const fetchInstructorCourses = async (token) => {
+  let result = []
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector(
+      "GET",
+      GET_ALL_INSTRUCTOR_COURSES_API,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    )
+    console.log("istructor course api response: ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch Instructor Courses")
+    }
+    result = response?.data?.data
+  } catch (err) {
+    console.log("instructor courses err: ", err.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+  return result
+}
+
+
+export const deleteCourse = async (data, token) => {
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector("DELETE",DELETE_COURSE_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("delete course api response: ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Delete Course")
+    }
+    toast.success("Course Deleted")
+  } catch (err) {
+    console.log("deleted course api err: ", err.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+}
+
+export const getFullDetailsOfCourse = async (courseId, token) => {
+  const toastId = toast.loading("Loading...")
+  //   dispatch(setLoading(true));
+  let result = null
+  try {
+    const response = await apiConnector(
+      "POST",
+      GET_FULL_COURSE_DETAILS_API_AUTHENTICATED,
+      {
+        courseId,
+      },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    )
+    console.log("course fulldetails response api : ", response)
+
+    if (!response.data.success) {
+      throw new Error(response.data.message)
+    }
+    result = response?.data?.data
+  } catch (err) {
+    console.log("course fulldetails api err: ", err.message)
+    result = err.response.data
+    // toast.error(error.response.data.message);
+  }
+  toast.dismiss(toastId)
+  //   dispatch(setLoading(false));
+  return result
+}
+
+export const markLectureAsComplete = async (data, token) => {
+  let result = null
+  console.log("mark complete data", data)
+  const toastId = toast.loading("Loading...")
+  try {
+    const response = await apiConnector("POST", LECTURE_COMPLETED_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log(
+      "merk lecture completed api res: ",
+      response
+    )
+
+    if (!response.data.message) {
+      throw new Error(response.data.error)
+    }
+    toast.success("Lecture Completed")
+    result = true
+  } catch (err) {
+    console.log("mark lecture completed err : ", err)
+    toast.error(err.message)
+    result = false
+  }
+  toast.dismiss(toastId)
+  return result
+}
+
+export const createRating = async (data, token) => {
+  const toastId = toast.loading("Loading...")
+  let success = false
+  try {
+    const response = await apiConnector("POST", CREATE_RATING_API, data, {
+      Authorization: `Bearer ${token}`,
+    })
+    console.log("create rating api response : ", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Create Rating")
+    }
+    toast.success("Rating Created")
+    success = true
+  } catch (err) {
+    success = false
+    console.log("create rating api err: ", err.message)
+    toast.error(err.message)
+  }
+  toast.dismiss(toastId)
+  return success
+}
