@@ -54,7 +54,7 @@ export const catalogData = {
     CATALOG_PAGE_DATA_API : BASE_URL + "/course/category/categoryPageDetails",
 }
 
-export const contactUsEndpoints={
+export const contactUsEndpoint={
   CONTACT_US_API : BASE_URL + "/contact/contact"
 }
 

@@ -70,7 +70,7 @@ export function signUp(
         otp,
         
        })
-       console.log("hlo")
+     
        console.log("sign up response from operation -> ",response)
 
        if(!response.data.success){
@@ -100,24 +100,27 @@ export function login(email,password,navigate){
             const response = await apiConnector("POST", LOGIN_API,{
                 email,password,
             })
-            console.log("before response")
-            console.log("login api response  : ",response)
-            console.log("after response",response.data.message)
-            if(! (response.data.success)){
+         
+            
+            if(! response.data.success){
                 throw new Error( response.data.message)
             }
             toast.success("Login successfully")
             dispatch(setToken(response.data.token))
-            const userImage = await response.data?.user?.image
-            ? response.data.user.image :
-             `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`
-            dispatch(setUser({...await response.data.user, image: userImage}))
-            localStorage.setItem("token", JSON.stringify(response.data.token))
-            localStorage.setItem("user",JSON.stringify( response).data.user)
+            const {user,token} = response.data.data;
+            console.log("user , token: ",user,token)
+            const userImage =  user?.image
+            ? user.image :
+             `https://api.dicebear.com/5.x/initials/svg?seed=${user.firstName} ${user.lastName}`
+            
+            dispatch(setUser({...await user, image: userImage}))
+            localStorage.setItem("token", JSON.stringify(token))
+            localStorage.setItem("user",JSON.stringify( user))
+   
             navigate("/dashboard/my-profile")
         }catch(err){
             console.log("login api err-> : ",err.message)
-            toast.error("could not login")
+            toast.error(err.response?.data?.message || err.message || "Login failed")
         }
          dispatch(setLoading(false))
     toast.dismiss(toastId)
@@ -177,6 +180,7 @@ export function resetPassword(password,confirmPassword,token){
                 throw new Error(response.data.message)
             }
             toast.success("password has been reset successfully")
+
         }catch(err){
             console.log("error in reset password token error; ",err.message)
             toast.error("unable to reset password")

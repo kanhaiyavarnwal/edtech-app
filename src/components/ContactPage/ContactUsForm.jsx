@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import {useForm} from "react-hook-form"
 
 import CountryCode from "../../data/countrycode.json"
 import { apiConnector } from "../../services/apiconnectors"
-import { contactusEndpoint } from "../../services/api"
+import { contactUsEndpoint } from "../../services/api"
 
+ const {CONTACT_US_API} = contactUsEndpoint
 const ContactUsForm = () => {
   const [loading, setLoading] = useState(false)
   const {
@@ -20,7 +21,7 @@ const ContactUsForm = () => {
       setLoading(true)
       const res = await apiConnector(
         "POST",
-        contactusEndpoint.CONTACT_US_API,
+        CONTACT_US_API,
         data
       )
       console.log("Email Res - ", res)
@@ -58,7 +59,7 @@ const ContactUsForm = () => {
             name="firstname"
             id="firstname"
             placeholder="Enter first name"
-            className="form-style"
+            className="form-style p-2 text-white bg-richblack-700 border-b rounded-md "
             {...register("firstname", { required: true })}
           />
           {errors.firstname && (
@@ -76,7 +77,7 @@ const ContactUsForm = () => {
             name="lastname"
             id="lastname"
             placeholder="Enter last name"
-            className="form-style"
+            className="form-style p-2 text-white bg-richblack-700 border-b rounded-md"
             {...register("lastname")}
           />
         </div>
@@ -91,7 +92,7 @@ const ContactUsForm = () => {
           name="email"
           id="email"
           placeholder="Enter email address"
-          className="form-style"
+          className="form-style p-2 text-white bg-richblack-700 border-b rounded-md"
           {...register("email", { required: true })}
         />
         {errors.email && (
@@ -113,14 +114,18 @@ const ContactUsForm = () => {
               name="firstname"
               id="firstname"
               placeholder="Enter first name"
-              className="form-style"
+              className="form-style  p-2 text-white bg-richblack-700 border-b rounded-md "
               {...register("countrycode", { required: true })}
             >
               {CountryCode.map((ele, i) => {
                 return (
-                  <option key={i} value={ele.code}>
-                    {ele.code} -{ele.country}
+                  <div className="">
+                      <option 
+                   key={i} value={ele.code}>
+                  {ele.code} - {ele.country}
                   </option>
+                  </div>
+                  
                 )
               })}
             </select>
@@ -131,7 +136,7 @@ const ContactUsForm = () => {
               name="phonenumber"
               id="phonenumber"
               placeholder="12345 67890"
-              className="form-style"
+              className="form-style p-2 text-white bg-richblack-700 border-b rounded-md"
               {...register("phoneNo", {
                 required: {
                   value: true,
@@ -160,7 +165,7 @@ const ContactUsForm = () => {
           cols="30"
           rows="7"
           placeholder="Enter your message here"
-          className="form-style"
+          className="form-style p-2 text-white bg-richblack-700 border-b rounded-md"
           {...register("message", { required: true })}
         />
         {errors.message && (

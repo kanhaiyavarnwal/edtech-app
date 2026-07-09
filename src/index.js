@@ -16,7 +16,22 @@ root.render(
     <Provider store={store}>
        <BrowserRouter>
     <App />
-     <Toaster position="top"/>
+   
+     <Toaster
+  position="top-right"
+  toastOptions={{
+    style: {
+      background: "rgba(22,29,41,0.75)",
+      backdropFilter: "blur(12px)",
+      color: "#fff",
+      borderRadius: "16px",
+      border: "1px solid rgba(255,255,255,0.15)",
+      padding: "16px",
+      boxShadow: "0 8px 32px rgba(0,0,0,.3)",
+    },
+  }}
+/>
+
     </BrowserRouter>
     </Provider>
    

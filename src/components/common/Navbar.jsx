@@ -26,23 +26,6 @@ export default function Navbar() {
  const location = useLocation()
  
 
-//  const [subLinks,setSubLinks] = useState([])
- 
-//  const fetchSubLinks =  async()=>{
-//         try{
-//        const result = await apiConnector("GET",categories.CATEGORIES_API)
-//        console.log("result -> ",result)
-//        setSubLinks(result.data.data)
-     
-//         }catch(err){
-//          console.log("course categories is not fetch")
-//         }
-//     }
-
-//  useEffect(()=>{
-//     fetchSubLinks();
-//  },[])
-
  const matchRoute = (route)=>{
     return matchPath({path:route}, location.pathname)
     
@@ -56,7 +39,7 @@ export default function Navbar() {
      </Link>
 
      <nav>
-        <ul className=' flex flex-col md:flex-row justify-between items-center gap-x-6 text-richblack-25'>
+        <ul className='flex flex-col md:flex-row md:justify-between md:items-center md:gap-x-6 text-richblack-25'>
             {
             NavbarLink.map((link,index)=>(
                 <li key={index}>
@@ -73,7 +56,7 @@ export default function Navbar() {
                              flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
                              opacity-0 transition-all duration-200 group-hover:visible
                              group-hover:opacity-100 lg:w-[300px]
-                            '>hlo
+                            '>
                             <div className='absolute left-[50%] top-0 h-6 w-6 rotate-45 translate-y-[-30%] translate-x-[88%] rounded  bg-richblack-5'>
 
                             </div>
