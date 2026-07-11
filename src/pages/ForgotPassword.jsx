@@ -15,58 +15,67 @@ const handleOnSubmit = (e)=>{
 }
 
 
+return (
+  <div className="min-h-screen bg-richblack-900 flex items-center justify-center px-4">
+    {loading ? (
+      <div className="text-white text-xl font-semibold">Loading...</div>
+    ) : (
+      <div className="w-full max-w-md bg-richblack-800 rounded-xl p-6 sm:p-8 shadow-lg">
+        <h1 className="text-3xl font-bold text-richblack-5 mb-4">
+          {!emailSent ? "Reset your password" : "Check your email"}
+        </h1>
 
-  return (
-    <div className='flex justify-center items-center text-white'>
-       {
-        loading ? 
-           (<div>Loading...</div>):
-           (
-            <div>
-                <h1>
-                    {
-                    !emailSent ? "Reset your password":"Check your email"
-                    }
-                </h1>
-                <p>
-                    {
-                     !emailSent ? "Have no fear. We’ll email you instructions to reset your password. If you dont have access to your email we can try account recovery": `we have sent the reset email to ${email}`   
-                    }
-                </p>
-            <form onSubmit={handleOnSubmit}>
-                {
-                    !emailSent && (
-                        <label htmlFor="email">
-            <p>Email Address:</p>
-              <input 
+        <p className="text-richblack-300 text-sm sm:text-base mb-6">
+          {!emailSent
+            ? "Have no fear. We'll email you instructions to reset your password. If you don't have access to your email, we can try account recovery."
+            : `We have sent the reset email to ${email}`}
+        </p>
+
+        <form onSubmit={handleOnSubmit} className="space-y-5">
+          {!emailSent && (
+            <label className="block">
+              <p className="text-richblack-25 mb-2 text-sm">
+                Email Address <span className="text-pink-300">*</span>
+              </p>
+
+              <input
                 type="email"
                 required
                 name="email"
                 value={email}
-                onChange=      {(e)=>setEmail(e.target.value)}
-                placeholder='Enter your email'
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="w-full rounded-lg bg-richblack-700 border border-richblack-600 text-richblack-5 px-4 py-3 outline-none focus:border-yellow-50"
+              />
+            </label>
+          )}
 
-               />
-                        </label>
-                    )
-                }
-                <button type='submit'>
-                    {
-                        !emailSent ?"Reset Password":"Resend email"
-                    }
-                </button>
-            </form>
-            <div>
-                <Link to="/login">
-                <p>Back to login</p>
-                </Link>
-            </div>
-            </div>
-           )
-       } 
-        
-     </div>
-  )
+          <button
+            type="submit"
+            className="w-full rounded-lg bg-yellow-50 text-richblack-900 font-semibold py-3 hover:bg-yellow-100 transition-all duration-200"
+          >
+            {!emailSent ? "Reset Password" : "Resend Email"}
+          </button>
+        </form>
+
+        <div className="mt-6">
+          <Link
+            to="/login"
+            className="text-yellow-50 font-medium hover:underline"
+          >
+            ← Back to Login
+          </Link>
+        </div>
+      </div>
+    )}
+  </div>
+);
+
+
+
 }
 
 export default ForgotPassword
+
+
+

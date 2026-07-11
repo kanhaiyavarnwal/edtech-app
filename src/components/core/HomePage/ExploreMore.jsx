@@ -26,7 +26,7 @@ export default function ExploreMore() {
       
         setCourses(result[0].courses)
         setCurrentCard(result[0].courses[0].heading)
-        toast.success("success")
+        toast.success(`${value}`)
     }
     
   return (

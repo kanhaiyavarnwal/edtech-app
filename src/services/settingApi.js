@@ -2,7 +2,7 @@ import { settingEndpoints } from "./api";
 import { apiConnector } from "./apiconnectors";
 import {toast} from "react-hot-toast"
 import {setUser} from "../slices/profileSlice"
-
+import { logOut } from "./operations/authApi";
 
 const {
     UPDATE_PROFILE_API ,
@@ -50,7 +50,7 @@ export async function changePassword(token, formData) {
     toast.success("Password Changed Successfully")
   } catch (err) {
     console.log("change password api err: ", err.message)
-    toast.error(error.response.data.message)
+    toast.error(err.response.data.message)
   }
   toast.dismiss(toastId)
 }
@@ -59,20 +59,23 @@ export async function changePassword(token, formData) {
 export function deleteProfile(token, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
+    console.log("delete api : ",DELETE_ACCOUNT_API)
+    console.log("delete api user token : ",token)
+    
     try {
-      const response = await apiConnector("DELETE",DELETE_ACCOUNT_API, null, {
+      const response = await apiConnector("DELETE", DELETE_ACCOUNT_API, null, {
         Authorization: `Bearer ${token}`,
       })
-      console.log("delete account api res: ", response)
+      console.log("delete account api res: ", response?.data?.message)
 
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
-      toast.success("Profile Deleted Successfully")
-      dispatch(logout(navigate))
+      toast.success("Profile Deleted Successfully" || response?.data?.message)
+     await dispatch(logOut(navigate));
     } catch (err) {
       console.log("delete account api err: ", err.message)
-      toast.error("Could Not Delete Profile")
+      toast.error(err.response?.data?.message||err.message)
     }
     toast.dismiss(toastId)
   }

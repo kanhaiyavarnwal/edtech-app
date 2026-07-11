@@ -10,9 +10,13 @@ import OpenRoute from './components/Auth/OpenRoute'
 import PrivateRoute from "./components/Auth/PrivateRoute"
 import VerifyEmail from "./pages/VerifyEmail"
 import About from './pages/About'
+import Error from "./pages/Error"
 import Dashboard from "./pages/Dashboard"
 import MyProfile from './components/core/Dashboard/MyProfile'
 import Contact from './pages/Contact'
+import Settings from "./components/core/Dashboard/Settings/DeleteAccount"
+
+
 export default function App() {
   return (
     <div className='w-screen min-h-screen bg-richblack-900 flex flex-col font-inter'>
@@ -25,7 +29,8 @@ export default function App() {
      <Route path="/update-password/:id" element={<OpenRoute><UpdatePassword/></OpenRoute>}/>
      <Route path="/verify-email" element={<OpenRoute><VerifyEmail/></OpenRoute>}/>
      <Route path="/about" element={<About/>}/>
-     <Route path="/contact" element={<Contact/>}/>
+    
+     <Route path="*" element={<Error/>}/>
       <Route 
       element={
         <PrivateRoute>
@@ -35,6 +40,9 @@ export default function App() {
        >
 
         <Route path="dashboard/my-profile" element={<MyProfile />} />
+        <Route path="/dashboard/settings" element={<Settings/>} />
+      
+        
        </Route>
      </Routes>
 

@@ -5,16 +5,20 @@ import { ApiError } from "../utils/ApiError.js";
 
 
 const auth = asyncHandler(async(req , res, next)=>{
-    
+        console.log("Cookies:", req.cookies);
+
+console.log("Authorization:", req.header("Authorization"));
+
+console.log("Body:", req.body);
         const token = req.cookies?.token || req.body?.token ||
-        req.header("Authorisation").replace("Bearer ","");
-     
+        req.header("Authorization")?.replace("Bearer ","");
+     console.log("after just token extract: ", token);
      if(!token){
         throw new ApiError(404 , "Token is not found")
      }
-  console.log("tokewn in auth middleware: ",token)
+  console.log("token in auth middleware: ",token)
      try{
-        const decodedToken = await jwt.verify(token,process.env.JWT_SECRET)
+        const decodedToken = jwt.verify(token,process.env.JWT_SECRET)
         console.log("decodedtoken -> :",decodedToken)
         req.user = decodedToken
      }catch(err){

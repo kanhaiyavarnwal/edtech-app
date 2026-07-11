@@ -42,10 +42,11 @@ const updateProfile = asyncHandler(async(req , res)=>{
 
 const deleteAccount = asyncHandler(async(req , res)=>{
         // getid
-        const id = req.user.id;
-
+        const id = req.user?.id;
+console.log("id: ",id)
         /// validation
         const userDetails = await User.findById(id)
+        console.log("userdetails : ",userDetails)
         if(!userDetails){
             throw new ApiError(404,"user not found")
         }
@@ -60,7 +61,7 @@ const deleteAccount = asyncHandler(async(req , res)=>{
         return res
         .status(200)
         .json(
-              new ApiResponse(200,null,"user deleted successfully")
+              new ApiResponse(200,null,"User Deleted Successfully")
         )
         //
 })
