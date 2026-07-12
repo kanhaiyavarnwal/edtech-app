@@ -10,25 +10,30 @@ const {
      DELETE_ACCOUNT_API
 } = settingEndpoints
 
-export function updateProfile(token, formData) {
+export function updateProfile(token, formData,navigate) {
   return async (dispatch) => {
+    // console.log("token in the updateProfi: ",token)
+    // console.log("formDasta in the updateProfi: ",formData)
+
     const toastId = toast.loading("Loading...")
     try {
       const response = await apiConnector("PUT", UPDATE_PROFILE_API, formData, {
         Authorization: `Bearer ${token}`,
       })
-      console.log("update profile api response: ", response)
-
+      console.log("update profile api response: ", response.data)
+     
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
-      const userImage = response.data.updatedUserDetails.image
-        ? response.data.updatedUserDetails.image
-        : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.updatedUserDetails.firstName} ${response.data.updatedUserDetails.lastName}`
+      const {updatedUser} = response.data.data
+      console.log("updated User: ",updatedUser)
+      const userImage = updatedUser.image? updatedUser.image
+        : `https://api.dicebear.com/5.x/initials/svg?seed=${updatedUser.firstName} ${updatedUser.lastName}`
       dispatch(
-        setUser({ ...response.data.updatedUserDetails, image: userImage })
+        setUser({ ...updatedUser, image: userImage })
       )
       toast.success("Profile Updated Successfully")
+      navigate("//dashboard/my-profile")
     } catch (err) {
       console.log("update profile api err: ", err.message)
       toast.error("Could Not Update Profile")
@@ -36,8 +41,9 @@ export function updateProfile(token, formData) {
     toast.dismiss(toastId)
   }
 }
-export async function changePassword(token, formData) {
+export async function changePassword(token,navigate, formData) {
   const toastId = toast.loading("Loading...")
+  console.log("token in setting api: ",token)
   try {
     const response = await apiConnector("POST", CHANGE_PASSWORD_API, formData, {
       Authorization: `Bearer ${token}`,
@@ -48,9 +54,10 @@ export async function changePassword(token, formData) {
       throw new Error(response.data.message)
     }
     toast.success("Password Changed Successfully")
+    navigate("/dashboard/my-profile")
   } catch (err) {
     console.log("change password api err: ", err.message)
-    toast.error(err.response.data.message)
+    toast.error( err.response.data.message||"could not change your password")
   }
   toast.dismiss(toastId)
 }

@@ -73,7 +73,7 @@ return(
         <CodeBlocks  
         position={"lg:flex-row flex-col"} 
         heading={
-          <div className=" max-w-[95%]   font-semibold ">
+          <div className=" max-w-[95%] text-2xl lg:text-5xl  font-semibold ">
             Unlock your
             <HighlightText text={"coding potentials"}/>
             with our online courese

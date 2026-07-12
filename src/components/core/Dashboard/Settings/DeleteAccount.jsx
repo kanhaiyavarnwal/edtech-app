@@ -7,7 +7,7 @@ import { deleteProfile } from '../../../../services/settingApi'
 export default function DeleteAccount() {
   
     const authins = useSelector((state)=>state.auth)
-    console.log("auth",authins)
+    // console.log("auth",authins)
     const {token} = useSelector((state)=>state.auth)
     
     const dispatch = useDispatch()

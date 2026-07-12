@@ -25,8 +25,7 @@ export function sendOtp(email,navigate){
                 email,
                 checkUserPresent:true,
             })
-            console.log(" send otp response in the: ",response?.data?.message)
-            console.log(response.data.success)
+          
 
             if(!response.data.success){
                 throw new Error(response.data.message)
@@ -71,7 +70,7 @@ export function signUp(
         
        })
      
-       console.log("sign up response from operation -> ",response)
+     
 
        if(!response.data.success){
         throw new Error(response.data.message)
@@ -105,11 +104,11 @@ export function login(email,password,navigate){
             if(! response.data.success){
                 throw new Error( response.data.message)
             }
-            console.log("login response : ",response.data)
+          
             toast.success( response?.data?.message)
             dispatch(setToken(response.data.data.token))
             const {user,token} = response.data.data;
-            console.log("token after login from operations: ",token)
+            
             const userImage =  user?.image
             ? user.image :
              `https://api.dicebear.com/5.x/initials/svg?seed=${user.firstName} ${user.lastName}`

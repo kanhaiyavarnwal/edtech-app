@@ -8,7 +8,7 @@ import  {CourseProgress} from "../models/CourseProgress.js";
 
 const updateProfile = asyncHandler(async(req , res)=>{
     // get data
-    const {dateOfBirth="", about="", gender, contactNumber} = req.body;
+    const {dateOfBirth="", about="", gender, contactNumber,firstName,lastName} = req.body;
    console.log("req body ",req.body)
     //get userid
     const id = req.user?.id
@@ -30,13 +30,17 @@ const updateProfile = asyncHandler(async(req , res)=>{
     profileDetails.about = about
     profileDetails.contactNumber = contactNumber
     profileDetails.dateOfBirth = dateOfBirth
+   
     await profileDetails.save()
     console.log("inside profile controlller profile after update ",profileDetails)
     //return res
+    const updatedUser = await User.findById(id)
+    .populate("additionalDetails");
+     updatedUser.password=undefined;
     return res
     .status(200)
     .json(
-        new ApiResponse(200, {profileDetails}, "Profile updated successfully")
+        new ApiResponse(200, {updatedUser,profileDetails}, "Profile updated successfully")
     )
 })
 

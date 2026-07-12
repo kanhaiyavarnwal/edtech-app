@@ -1,9 +1,9 @@
 import { profileEndpoints } from "../api";
 import {setLoading} from "../../slices/profileSlice"
-import {logout} from "./authApi"
+import {logOut} from "./authApi"
 import { apiConnector } from "../apiconnectors";
 import {toast} from "react-hot-toast"
-
+import {setUser} from "../../slices/profileSlice"
 
 
 const {
@@ -16,7 +16,7 @@ const {
 export function getUserDetails(token, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
-    dispatch(setLoading(true))
+    // dispatch(setLoading(true))
     try {
       const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
         Authorization: `Bearer ${token}`,
@@ -31,7 +31,7 @@ export function getUserDetails(token, navigate) {
         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`
       dispatch(setUser({ ...response.data.data, image: userImage }))
     } catch (err) {
-      dispatch(logout(navigate))
+      dispatch(logOut(navigate))
       console.log("get userdetails api err: ", err.message)
       toast.error("Could Not Get User Details")
     }
@@ -45,9 +45,10 @@ export function getUserDetails(token, navigate) {
 
 export async function getUserEnrolledCourses(token) {
   const toastId = toast.loading("Loading...")
+console.log("enrolled api 48: ",GET_USER_ENROLLED_COURSES_API)
   let result = []
   try {
-    
+    console.log("before try")
     const response = await apiConnector(
       "GET",
        GET_USER_ENROLLED_COURSES_API,
@@ -56,6 +57,7 @@ export async function getUserEnrolledCourses(token) {
         Authorization: `Bearer ${token}`,
       }
     )
+        console.log("before try")
     console.log("get userenrolled course response: ",response);
     
     if (!response.data.success) {
@@ -83,7 +85,7 @@ export async function getInstructorData(token) {
     result = response?.data?.courses
 
   }
-  catch(error) {
+  catch(err) {
     console.log("get instructaor data api response err: ", err.message);
     toast.error("Could not Get Instructor Data")
   }

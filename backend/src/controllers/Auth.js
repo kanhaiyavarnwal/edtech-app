@@ -183,16 +183,16 @@ const changePassword = asyncHandler(async (req, res) => {
   // return response
   const { oldPassword, newPassword, confirmPassword } = req.body;
 
-  //    if(!oldPassword || !newPassword || confirmPassword){
-  //        throw new ApiError(400,"All field are required")
-  //     }
-  if (
-    [oldPassword, newPassword, confirmPassword].some(
-      (field) => field?.trim() === "",
-    )
-  ) {
-    throw new ApiError(400, "All field are required");
-  }
+     if(!oldPassword ){
+         throw new ApiError(400,"old pass required")
+      }
+     if(!newPassword  ){
+         throw new ApiError(400,"new pass required")
+      }
+     if(!confirmPassword  ){
+         throw new ApiError(400,"confirm pass required")
+      }
+ 
 
   if (newPassword != confirmPassword) {
     throw new ApiError(400, "newpassword and confirmpassword is not match");

@@ -41,7 +41,7 @@ export default function LearningGrid() {
          Learning.map((card,index)=>(
             <div key={index} 
             className={`${index===0 && "lg:col-span-2 lg:h-[250px] p-5"} 
-            ${card.order % 2 == 1 ? "bg-richblack-700 lg:h-[250px] p-5":"bg-richblack-800 p-5 lg:h-[250px]"}
+            ${card.order % 2 === 1 ? "bg-richblack-700 lg:h-[250px] p-5":"bg-richblack-800 p-5 lg:h-[250px]"}
             ${card.order === 3 && "lg:col-start-2 lg:h-[250px]"}
             ${card.order < 0 && "bg-transparent"}
             `}>

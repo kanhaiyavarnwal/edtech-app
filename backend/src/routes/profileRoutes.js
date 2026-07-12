@@ -11,7 +11,7 @@ router.delete("/deleteAccount" , auth,deleteAccount)
 router.get("/getAllUserDetails", auth,getAllUserDetails)
 
  // ***** get enrolled course
- router.get("/getEnrolledCourse" , getEnrolledCourses)
+ router.get("/getEnrolledCourses" , getEnrolledCourses)
  router.get("/instructorDashboard", instructorDashboard)
  
 export default router
