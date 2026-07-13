@@ -205,7 +205,7 @@ const getAllCourses = asyncHandler(async(req ,res )=>{
 
 const getCourseDetails = asyncHandler(async(req,res)=>{
     // get id
-    const {courseId} = req.body
+    const {courseId} = req.query
     console.log("req.body ",req.body)
     // find courseDetails
     const courseDetails = await Course.findById(

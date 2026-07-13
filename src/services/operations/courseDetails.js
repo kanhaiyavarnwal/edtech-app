@@ -1,9 +1,12 @@
 import { courseEndpoints } from "../api";
-import {apiConnectors} from "../apiconnectors"
+
 import {toast} from "react-hot-toast"
+import { apiConnector } from "../apiconnectors";
 import { updateCompletedLectures } from "../../slices/viewCourseSlice"
+
 const {
      CREATE_COURSE_API,
+     COURSE_CATEGORIES_API ,
      EDIT_COURSE_API,
      COURSE_DETAILS_API ,
      GET_ALL_INSTRUCTOR_COURSES_API,
@@ -27,7 +30,7 @@ export const getAllCourses = async () =>{
     const toastId = toast.loading("Loading...")
     let result = []
     try{
-     const response = await apiConnectors("GET",GET_ALL_COURSES_API)
+     const response = await apiConnector("GET",GET_ALL_COURSES_API)
      
      if(!response?.data?.success){
         throw new Error("could not fetch all courses")
@@ -38,16 +41,18 @@ export const getAllCourses = async () =>{
      console.log("get all course api error: ",err.message)
      toast.error(err.message)
     }
-    toast.dismiss(toastid)
+    toast.dismiss(toastId)
     return result;
 }
 
 export const fetchCourseDetails = async(courseId)=>{
+   console.log("course id ",courseId)
+   console.log("course details api: ",COURSE_DETAILS_API)
       const toastId = toast.loading("Loading...")
        let result = null
 
        try{
-        const response = await apiConnectors("GET", COURSE_DETAILS_API,{
+        const response = await apiConnector("GET", COURSE_DETAILS_API,{
             courseId,
         })
         console.log("course details api res: ",response)
@@ -59,20 +64,36 @@ export const fetchCourseDetails = async(courseId)=>{
 
        }catch(err){
         console.log("course details api error : ",err.message)
-         result = error.response.data
+        //  result = err.response.data
        }
         toast.dismiss(toastId)
         return result
 }
 
 // fetch course category
+export const fetchCourseCategories = async () => {
+  let result = []
+  try {
+    const response = await apiConnector("GET", COURSE_CATEGORIES_API )
+    console.log("COURSE_CATEGORIES_API API RESPONSE............", response)
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch Course Categories")
+    }
+    result = response?.data?.data
+  } catch (error) {
+    console.log("COURSE_CATEGORY_API API ERROR............", error)
+    toast.error(error.message)
+  }
+  return result
+}
+
 
 export const addCourseDetails = async(data,token)=>{
     let result = null
      const toastId = toast.loading("Loading...")
 
      try{
-        const response = await apiConnectors("POST", CREATE_COURSE_API,DataTransfer,{
+        const response = await apiConnector("POST", CREATE_COURSE_API,DataTransfer,{
                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`,
         })
@@ -130,7 +151,7 @@ export const createSection = async(data , token)=>{
     toast.success("Course Section Created")
     result = response?.data?.updatedCourse
   } catch (err) {
-    console.log("create section api err:  ", error.message)
+    console.log("create section api err:  ", err.message)
     toast.error(err.message)
   }
   toast.dismiss(toastId)

@@ -89,6 +89,7 @@ const getAllUserDetails = asyncHandler(async(req ,res)=>{
 })
 
    const getEnrolledCourses = asyncHandler(async(req ,res)=>{
+    console.log("req.user: ",req.user)
       const userId = req.user?.id
       let  userDetails = await User.findOne({
               _id: userId,
@@ -101,7 +102,7 @@ const getAllUserDetails = asyncHandler(async(req ,res)=>{
             }
         }
       }).exec()
-
+     console.log("user details in backend : ",userDetails )
       userDetails = userDetails.toObject()
       var SubSectionLength = 0
 

@@ -47,7 +47,7 @@ router.get("/getInstructorCourses",getInstructorCourses)
  //*****************categary can only Created by admin  **********************/
 
 router.post("/category/createCategory" ,auth,isAdmin, createCategory)
-router.get("/category/getAllCategory" , getAllCategory)
+router.get("/getAllCategory" , getAllCategory)
 router.get("/category/categoryPageDetails" , categoryPageDetails)
 
 
