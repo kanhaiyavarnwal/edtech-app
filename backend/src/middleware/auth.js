@@ -17,6 +17,7 @@ console.log("Body:", req.body);
         throw new ApiError(404 , "Token is not found")
      }
   console.log("token in auth middleware: ",token)
+  console.log(".env token: ",process.env.JWT_SECRET)
      try{
         const decodedToken = jwt.verify(token,process.env.JWT_SECRET)
         console.log("decodedtoken -> :",decodedToken)

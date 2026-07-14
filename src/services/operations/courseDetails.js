@@ -89,14 +89,18 @@ export const fetchCourseCategories = async () => {
 
 
 export const addCourseDetails = async(data,token)=>{
+
+  console.log("data in course api : ",data)
+
     let result = null
      const toastId = toast.loading("Loading...")
 
      try{
-        const response = await apiConnector("POST", CREATE_COURSE_API,DataTransfer,{
+        const response = await apiConnector("POST", CREATE_COURSE_API,data,{
                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`,
         })
+        console.log("data trandfer:", DataTransfer)
     console.log("response of add course : ",response)
 
      if (!response?.data?.success) {

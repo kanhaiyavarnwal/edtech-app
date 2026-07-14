@@ -11,6 +11,7 @@ import {convertSecondsToDuration} from "../utils/secToDuration.js"
 const createCourse = asyncHandler(async(req , res)=> {
             // fetch data
             const userId = req.user?.id;
+            console.log("userId :",userId)
     let {
       courseName,
       courseDescription,
@@ -23,8 +24,8 @@ const createCourse = asyncHandler(async(req , res)=> {
         } = req.body
      console.log("its in create course body",req.body)
      console.log("userId Instructor ",userId)
-    const thumbnail = req.files?.thumbnailImage
-   console.log("thumbnael Image-> ",thumbnail)
+    // const thumbnail = req.files?.thumbnailImage
+  //  console.log("thumbnael Image-> ",thumbnail)
     
     // Convert the tag and instructions from stringified Array to Array
     const tag = (_tag)
@@ -32,7 +33,7 @@ const createCourse = asyncHandler(async(req , res)=> {
 
         console.log("tag ", tag)
         console.log("instructions ", instructions)
-        console.log("req files",req.files)
+        // console.log("req files",req.files)
     // validations
    if(  
     !courseName  ||
@@ -40,8 +41,8 @@ const createCourse = asyncHandler(async(req , res)=> {
      ! whatYouWillLearn||
       !price ||
       !tag.length ||
-      !category ||
-      !thumbnail 
+      !category 
+      // !thumbnail 
       // !instructions.length
     ){
       throw new ApiError(400,"All Field are required")
@@ -68,17 +69,17 @@ const createCourse = asyncHandler(async(req , res)=> {
     }
 
     console.log("inside create category categoryDetails ",categoryDetails)
-   console.log("before the uploadimage",thumbnail.mimetype)
+  //  console.log("before the uploadimage",thumbnail.mimetype)
 
     // upload on cloudinary
-    const thumbnailImage  = await uploadImageToCloudinary(
-      thumbnail ,
-      process.env.FOLDER_NAME)
-      if(!thumbnailImage){
-        throw new ApiError(404,"image not found")
-      }
-         console.log("after the uploadimage")
-      console.log("uploaded image url ",thumbnailImage.secure_url)
+    // const thumbnailImage  = await uploadImageToCloudinary(
+    //   thumbnail ,
+    //   process.env.FOLDER_NAME)
+    //   if(!thumbnailImage){
+    //     throw new ApiError(404,"image not found")
+    //   }
+    //      console.log("after the uploadimage")
+    //   console.log("uploaded image url ",thumbnailImage.secure_url)
     // create an entry for new course
 
     const newCourse = await Course.create({
@@ -89,7 +90,7 @@ const createCourse = asyncHandler(async(req , res)=> {
       price,
       tag,
       category: categoryDetails._id,
-      thumbnail: thumbnailImage.secure_url,
+      // thumbnail: thumbnailImage.secure_url,
       status: status,
       instructions,
     })

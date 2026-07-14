@@ -1,3 +1,4 @@
+
 import { useState } from "react"
 import { VscSignOut } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
@@ -21,7 +22,7 @@ export default function Sidebar() {
   if (profileLoading || authLoading) {
     return (
       <div className="grid h-[calc(100vh-3.5rem)] min-w-[220px] items-center border-r-[1px] border-r-richblack-700 bg-richblack-800">
-        <div className="spinner">Loading...</div>
+        <div className="spinner"></div>
       </div>
     )
   }
@@ -58,7 +59,7 @@ export default function Sidebar() {
           >
             <div className="flex items-center gap-x-2">
               <VscSignOut className="text-lg" />
-              <span>LogOut</span>
+              <span>Logout</span>
             </div>
           </button>
         </div>
@@ -67,5 +68,3 @@ export default function Sidebar() {
     </>
   )
 }
-
-

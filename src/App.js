@@ -58,7 +58,7 @@ export default function App() {
       }
 
       {
-       user.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+       user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
         <>
         <Route path="/dashboard/add-course"  element={<AddCourse/>}    />
         
