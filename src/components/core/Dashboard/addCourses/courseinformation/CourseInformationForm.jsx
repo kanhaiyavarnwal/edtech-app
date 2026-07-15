@@ -36,7 +36,7 @@ export default function CourseInformationForm() {
   const getCategories = async()=>{
       setLoading(true)
       const categories = await fetchCourseCategories()
-      console.log("categories: ",categories)
+      // console.log("categories: ",categories)
       if(categories.length > 0){
         setCourseCategories(categories)
       }
@@ -79,7 +79,8 @@ export default function CourseInformationForm() {
 
   //   handle next button click
   const onSubmit = async (data) => {
-    console.log("onsubmit AHndler: ", data)
+    // console.log("onsubmit AHndler: ", data)
+    // console.log("onsubmit AHndler: ", data.courseCategory)
 
     if (editCourse) {
       // const currentValues = getValues()
@@ -145,9 +146,10 @@ export default function CourseInformationForm() {
     formData.append("status", COURSE_STATUS.DRAFT)
     formData.append("instructions", JSON.stringify(data.courseRequirements))
     formData.append("thumbnailImage", data.courseImage)
+    console.log("formdata ",Object.fromEntries(formData.entries()));
     setLoading(true)
     const result = await addCourseDetails(formData, token)
-    console.log("result: ",result)
+    // console.log("result: ",result)
     if (result) {
       dispatch(setStep(2))
       dispatch(setCourse(result))
@@ -226,16 +228,21 @@ export default function CourseInformationForm() {
         </label>
         <select
           {...register("courseCategory", { required: true })}
-          defaultValue=""
+          defaultValue="" 
+          
           id="courseCategory"
           className="form-style w-full"
+            // onChange={(e) => console.log("Selected:", e.target.value)}
+          
         >
+          
           <option value="" disabled>
             Choose a Category
           </option>
           {
             !loading && courseCategories.map((category,index)=>(
-             <option kay={index} value="category?.id">
+              // console.log("category: ",category._id),
+             <option key={index} value={category?._id}>
               {category?.name}
              </option>
             ))
@@ -258,14 +265,14 @@ export default function CourseInformationForm() {
         getValues={getValues}
       /> 
       {/* Course Thumbnail Image */}
-       {/* <Upload
+       <Upload
         name="courseImage"
         label="Course Thumbnail"
         register={register}
         setValue={setValue}
         errors={errors}
         editData={editCourse ? course?.thumbnail : null}
-      /> */}
+      />
       {/* Benefits of the course */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseBenefits">

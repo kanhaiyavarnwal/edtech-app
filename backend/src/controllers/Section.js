@@ -30,12 +30,14 @@ const createSection = asyncHandler(async(req , res)=>{
                 
                 ).populate({
                   path:"courseContent",
+                  
                   populate: {
                     path: "subSection",
                   }
                 }).exec()
     // hw : use populate to replace section/subsection both in the updatedCourseDetails
   // resturn successfull response
+  console.log("updatedCourseDetails: ",updatedCourseDetails)
   return res
   .status(200)
   .json(
@@ -46,6 +48,7 @@ const createSection = asyncHandler(async(req , res)=>{
 const updateSection = asyncHandler(async(req ,res )=>{
      // data input
      const {sectionName,sectionId,courseId} = req.body
+     console.log("req.body: ",req.body)
         
       const section = await Section.findByIdAndUpdate(
                                    sectionId,

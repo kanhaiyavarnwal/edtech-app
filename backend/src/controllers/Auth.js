@@ -149,7 +149,7 @@ const login = asyncHandler(async (req, res) => {
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       // yha errror aayega
-      expiresIn: "2h",
+      expiresIn: "8h",
     });
     user.token = token;
     user.password = undefined;

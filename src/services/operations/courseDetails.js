@@ -75,7 +75,7 @@ export const fetchCourseCategories = async () => {
   let result = []
   try {
     const response = await apiConnector("GET", COURSE_CATEGORIES_API )
-    console.log("COURSE_CATEGORIES_API API RESPONSE............", response)
+    // console.log("COURSE_CATEGORIES_API API RESPONSE............", response)
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Course Categories")
     }
@@ -90,7 +90,7 @@ export const fetchCourseCategories = async () => {
 
 export const addCourseDetails = async(data,token)=>{
 
-  console.log("data in course api : ",data)
+  // console.log("data in course api : ",data)
 
     let result = null
      const toastId = toast.loading("Loading...")
@@ -100,8 +100,8 @@ export const addCourseDetails = async(data,token)=>{
                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${token}`,
         })
-        console.log("data trandfer:", DataTransfer)
-    console.log("response of add course : ",response)
+
+    // console.log("response of add course : ",response)
 
      if (!response?.data?.success) {
       throw new Error("Could Not Add Course Details")
@@ -113,8 +113,52 @@ export const addCourseDetails = async(data,token)=>{
      }catch(err){
       console.log("create course api err: ",err.message)
       toast.error(err.message)
+      result = err.message
      }
+     toast.dismiss(toastId)
+     return result
 }
+
+
+// export const addCourseDetails = async (data, token) => {
+//   console.log("FormData:");
+
+//   // Print FormData
+//   for (const [key, value] of data.entries()) {
+//     console.log(key, value);
+//   }
+
+//   let result = null;
+//   const toastId = toast.loading("Loading...");
+//   console.log("create course api : ",CREATE_COURSE_API)
+//   try {
+//     const response = await apiConnector(
+//       "POST",
+//       CREATE_COURSE_API,
+//       data,
+//       {
+//         Authorization: `Bearer ${token}`,
+//         "Content-Type": "multipart/form-data",
+//       }
+//     );
+
+//     console.log("Create Course Response:", response);
+
+//     if (!response?.data?.success) {
+//       throw new Error(response?.data?.message || "Could Not Add Course");
+//     }
+
+//     toast.success("Course Details Added Successfully");
+//     result = response.data.data;
+//   } catch (err) {
+//     console.log("Create Course Error:", err.message);
+//     toast.error(err.response?.data?.message || err.message);
+//   } finally {
+//     toast.dismiss(toastId);
+//   }
+
+//   return result; // <-- Don't forget this
+// };
 
 export const editCourseDetails = async( data,token)=>{
     let result = null
@@ -142,6 +186,8 @@ export const editCourseDetails = async( data,token)=>{
 
 export const createSection = async(data , token)=>{
      let result = null
+    //  console.log("data print in courseDetails : ",data)
+    //  console.log("tokren in section : ",token)
   const toastId = toast.loading("Loading...")
 
   try {
@@ -149,16 +195,20 @@ export const createSection = async(data , token)=>{
       Authorization: `Bearer ${token}`,
     })
     console.log("crete section api :  ", response)
+    console.log("crete section api data:  ", response.data)
+    console.log("crete section api data:  ", response.data.data.courseContent)
+    console.log("crete section api course content  length:  ", response.data.data.courseContent.length)
     if (!response?.data?.success) {
       throw new Error("Could Not Create Section")
     }
     toast.success("Course Section Created")
-    result = response?.data?.updatedCourse
+    result = response?.data?.data
   } catch (err) {
     console.log("create section api err:  ", err.message)
     toast.error(err.message)
   }
   toast.dismiss(toastId)
+
   return result
 }
 
@@ -187,7 +237,9 @@ export const updateSection = async(data,token)=>{
      let result = null
   const toastId = toast.loading("Loading...")
   try {
-    const response = await apiConnector("POST",UPDATE_SECTION_API, data, {
+    console.log("update section data:",data)
+    console.log("update section api : ",  UPDATE_SECTION_API )
+    const response = await apiConnector("POST",  UPDATE_SECTION_API , data, {
       Authorization: `Bearer ${token}`,
     })
     console.log("update section api response:   ", response)
