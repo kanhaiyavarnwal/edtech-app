@@ -35,10 +35,10 @@ router.delete("/subsection/deleteSubSection" ,auth,isInstructor, deleteSubSectio
 
 router.get("/getAllCourses" , getAllCourses);
 router.put("/editCourse" , editCourse)
-router.get("/getFullcourseDetails" , getFullCourseDetails)
-router.delete("/deleteCourse",deleteCourse)
+router.post("/getFullcourseDetails" ,auth,isInstructor, getFullCourseDetails)
+router.delete("/deleteCourse",auth,isInstructor,deleteCourse)
 router.get("/getCourseDetails" , getCourseDetails);
-router.get("/getInstructorCourses",getInstructorCourses)
+router.get("/getInstructorCourses",auth,isInstructor,getInstructorCourses)
 
 
 

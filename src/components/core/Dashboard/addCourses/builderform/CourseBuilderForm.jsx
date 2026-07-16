@@ -35,11 +35,11 @@ export default function CourseBuilderForm() {
 
   // handle form submission
   const onSubmit = async (data) => {
-    console.log("course buider form: ",data)
+    // console.log("course buider form: ",data)
     setLoading(true)
 
     let result
-
+  
     if (editSectionName) {
       result = await updateSection(
         {
@@ -49,7 +49,7 @@ export default function CourseBuilderForm() {
         },
         token
       )
-      console.log("edit", result)
+      // console.log("edit", result)
     } else {
       result = await createSection(
         {
@@ -58,10 +58,10 @@ export default function CourseBuilderForm() {
         },
         token
       )
-      console.log(" all create section in coursebyuilder: ",result)
+      // console.log(" all create section in coursebyuilder: ",result)
     }
     if (result) {
-      console.log("section result", result)
+      // console.log("section result", result)
       dispatch(setCourse(result))
       setEditSectionName(null)
       setValue("sectionName", "")
@@ -115,7 +115,7 @@ export default function CourseBuilderForm() {
             disabled={loading}
             placeholder="Add a section to build your course"
             {...register("sectionName", { required: true })}
-            className="form-style w-full text-richblack-700"
+            className="form-style w-full text-richblack-800"
           />
           {errors.sectionName && (
             <span className="ml-2 text-xs tracking-wide text-pink-200">

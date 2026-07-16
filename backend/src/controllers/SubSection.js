@@ -10,34 +10,39 @@ import { uploadImageToCloudinary } from "../utils/imageUploader.js";
 
 const createSubSection = asyncHandler(async(req , res)=>{
        // fetch data from reqbody
-       const {sectionId, title,description,timeDuration} = req.body
+       const {sectionId, title,description} = req.body
+       console.log("req.body: ",req.body)
+     
        //extarct file/video
-       const video = req.files?.video[0]
-       console.log("req.files-:> ",req.files.video[0])
+       const video = req.files?.video
+       console.log("req.files-:> ",req.files.video)
        // validation
        if ([sectionId, title, description].some((field)=>
     field?.trim()===""
     )){
         throw new ApiError(400, "string type field are required")
     }
-    if(!video || !timeDuration ){
-        throw new ApiError(400, "important field are required")
+    if(!video ){
+        throw new ApiError(400, "video is required")
     }
+    // if( !timeDuration ){
+    //   throw new ApiError(400,"timeduration is required")
+    // }
     console.log(Array.isArray(video));
-    console.log("video ",video[0])
+    console.log("video ",video)
        /// upload video to cloudinary
-       const uploadDeteails = await uploadImageToCloudinary(video,process.env.FOLDER_NAME)
+       const uploadDetails = await uploadImageToCloudinary(video,process.env.FOLDER_NAME)
 
 
-       console.log("uploadDetails -> ",uploadDeteails?.secure_url)
+       console.log("uploadDetails -> ",uploadDetails?.secure_url)
        // fetch url from cloudinary
 
        // create subsection
        const subSectionDetails = await SubSection.create({
          title:title,
-         timeDuration:`${uploadDeteails.duration}`,
+         timeDuration:`${uploadDetails.duration}`,
          description:description,
-         videoUrl:uploadDeteails?.secure_url,
+         videoUrl:uploadDetails?.secure_url,
        })
        console.log("subSection details after uploaod on cloudinary-> ",subSectionDetails)
        // update section with this subsection

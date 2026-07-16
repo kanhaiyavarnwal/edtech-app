@@ -1,5 +1,6 @@
 import { cloudinaryConnect } from "../utils/cloudinary.js";
 import {Course} from "../models/Course.js"
+import { Section } from "../models/Section.js";
 import {Category} from "../models/Category.js"
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
@@ -11,7 +12,7 @@ import {convertSecondsToDuration} from "../utils/secToDuration.js"
 const createCourse = asyncHandler(async(req , res)=> {
             // fetch data
             const userId = req.user?.id;
-            console.log("userId :",userId)
+            // console.log("userId :",userId)
     let {
       courseName,
       courseDescription,
@@ -22,10 +23,10 @@ const createCourse = asyncHandler(async(req , res)=> {
       status,
       instructions: _instructions,
         } = req.body
-     console.log("its in create course body",req.body)
-     console.log("userId Instructor ",userId)
+    //  console.log("its in create course body",req.body)
+    //  console.log("userId Instructor ",userId)
     const thumbnail = req.files?.thumbnailImage
-   console.log("thumbnael Image-> ",thumbnail)
+  //  console.log("thumbnael Image-> ",thumbnail)
     
     // Convert the tag and instructions from stringified Array to Array
       const tag = JSON.parse(_tag);
@@ -147,15 +148,24 @@ const editCourse = asyncHandler(async(req, res)=>{
     }
 
     // Update only the fields that are present in the request body
-    for (const key in updates) {
-      if (updates.hasOwnProperty(key)) {
-        if (key === "tag" || key === "instructions") {
-          course[key] = JSON.parse(updates[key])
-        } else {
-          course[key] = updates[key]
-        }
-      }
-    }
+    // for (const key in updates) {
+    //   if (updates.hasOwnProperty(key)) {
+    //     if (key === "tag" || key === "instructions") {
+    //       course[key] = JSON.parse(updates[key])
+    //     } else {
+    //       course[key] = updates[key]
+    //     }
+    //   }
+    // }
+
+
+for (const key of Object.keys(updates)) {
+  if (key === "tag" || key === "instructions") {
+    course[key] = JSON.parse(updates[key]);
+  } else {
+    course[key] = updates[key];
+  }
+}
 
      await course.save()
 
@@ -256,8 +266,9 @@ const getCourseDetails = asyncHandler(async(req,res)=>{
 })
 
 const getFullCourseDetails = asyncHandler(async(req , res) =>{
-    const {courseId} = req.body
-
+  
+    console.log("req.body: ",req.body)
+  const {courseId} = req.body
     const userId = req.user?.id
 
     const courseDetails = await Course.findOne(
@@ -277,7 +288,7 @@ const getFullCourseDetails = asyncHandler(async(req , res) =>{
         }
     }).exec()
 
-let courseProgressCount = await CourseProgress.findOne({
+let courseProgressCount = await Course.findOne({
       courseID: courseId,
       userId: userId,
     })
@@ -319,9 +330,15 @@ let courseProgressCount = await CourseProgress.findOne({
       const instructorId = req.user?.id
 
       // find all course belonging to the user
+      console.log("req.user:", req.user);
+console.log("instructorId:", instructorId);
+console.log("type:", typeof instructorId);
+const allCourses = await Course.find();
+
+console.log("All Courses:", allCourses);
       const instructorCourses = await Course.find({instructor: instructorId})
                                                   .sort({created: -1})
-
+console.log("instructor courses: ",instructorCourses)
              return res
              .status(200)
              .json(
@@ -331,6 +348,7 @@ let courseProgressCount = await CourseProgress.findOne({
 
 const deleteCourse = asyncHandler(async(req , res)=>{
     const {courseId} = req.body
+
     
     const course = await Course.findById(courseId)
 
@@ -339,7 +357,8 @@ const deleteCourse = asyncHandler(async(req , res)=>{
     }
 
     // Unenroll students from the course
-    const studentsEnrolled = course.studentsEnroled
+    const studentsEnrolled = course.studentEnrolled
+    
     for (const studentId of studentsEnrolled) {
       await User.findByIdAndUpdate(studentId, {
         $pull: { courses: courseId },
@@ -347,7 +366,9 @@ const deleteCourse = asyncHandler(async(req , res)=>{
     }
 
      // Delete sections and sub-sections
+     console.log("course: ",course)
     const courseSections = course.courseContent
+    console.log("courseSections: ",courseSections)
     for (const sectionId of courseSections) {
       // Delete sub-sections of the section
       const section = await Section.findById(sectionId)

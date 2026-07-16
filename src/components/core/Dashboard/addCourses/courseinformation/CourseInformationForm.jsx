@@ -146,7 +146,7 @@ export default function CourseInformationForm() {
     formData.append("status", COURSE_STATUS.DRAFT)
     formData.append("instructions", JSON.stringify(data.courseRequirements))
     formData.append("thumbnailImage", data.courseImage)
-    console.log("formdata ",Object.fromEntries(formData.entries()));
+    // console.log("formdata ",Object.fromEntries(formData.entries()));
     setLoading(true)
     const result = await addCourseDetails(formData, token)
     // console.log("result: ",result)

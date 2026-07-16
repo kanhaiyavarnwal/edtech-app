@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 
 import CourseBuilderForm from "./builderform/CourseBuilderForm"
 import CourseInformationForm from "./courseinformation/CourseInformationForm"
-import PublishCourse from "./courseinformation/PublishCourse"
+import PublishCourse from "./Publishcourse/Index"
 
 
 export default function RenderSteps() {
