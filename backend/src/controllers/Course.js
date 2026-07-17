@@ -147,18 +147,6 @@ const editCourse = asyncHandler(async(req, res)=>{
       course.thumbnail = thumbnailImage.secure_url
     }
 
-    // Update only the fields that are present in the request body
-    // for (const key in updates) {
-    //   if (updates.hasOwnProperty(key)) {
-    //     if (key === "tag" || key === "instructions") {
-    //       course[key] = JSON.parse(updates[key])
-    //     } else {
-    //       course[key] = updates[key]
-    //     }
-    //   }
-    // }
-
-
 for (const key of Object.keys(updates)) {
   if (key === "tag" || key === "instructions") {
     course[key] = JSON.parse(updates[key]);
