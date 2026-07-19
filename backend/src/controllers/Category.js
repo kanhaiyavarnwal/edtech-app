@@ -3,6 +3,10 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {Category} from "../models/Category.js"
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max)
+  }
+
 const  createCategory = asyncHandler(async (req , res) =>{
      const {name , description} = req.body;
       console.log("req.body ",req.body)
@@ -35,6 +39,7 @@ const getAllCategory = asyncHandler(async(req , res)=>{
 const categoryPageDetails = asyncHandler(async(req ,  res)=>{
           // get category id 
           const {categoryId} = req.body;
+          console.log("req body: ",req.body)
           //get courses for specific categoryid
           const selectedCategory = await Category.findById(categoryId)
                                                          .populate({
@@ -49,7 +54,7 @@ const categoryPageDetails = asyncHandler(async(req ,  res)=>{
             return res
             .status(404)
             .json(
-              new response(404, null, "selected category not found")
+              new ApiResponse(404, null, "selected category not found")
             )
           }
           // Handle the case when there are no courses
@@ -59,11 +64,11 @@ const categoryPageDetails = asyncHandler(async(req ,  res)=>{
           }
           // get courses for differrent categories
          
-          const categoriesExcepSelected = await Category.find({
+          const categoriesExceptSelected = await Category.find({
             _id:{$ne:categoryId},
           })
 
-          let differentCategory = await Category.findOne(
+          let differentCategory = await Category.findById(
               categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]
           ._id
           ).populate({
@@ -92,26 +97,18 @@ const categoryPageDetails = asyncHandler(async(req ,  res)=>{
         console.log("mostSellingCourses COURSE", mostSellingCourses)
 
 
-
-
-
-
-
-
-
-
-     
-
        return res
        .status(200)
        .json(
-         new ApiResponse(200,{
+         new ApiResponse(200,
                            selectedCategory,
                             differentCategory,
                             mostSellingCourses
-                        },"fetch the category of courses")
+                        ,"fetch the category of courses")
        )
 
 
 })
+
+
 export {createCategory , getAllCategory , categoryPageDetails}

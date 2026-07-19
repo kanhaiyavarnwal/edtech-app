@@ -48,14 +48,14 @@ router.get("/getInstructorCourses",auth,isInstructor,getInstructorCourses)
 
 router.post("/category/createCategory" ,auth,isAdmin, createCategory)
 router.get("/getAllCategory" , getAllCategory)
-router.get("/category/categoryPageDetails" , categoryPageDetails)
+router.post("/categoryPageDetails" , categoryPageDetails)
 
 
 
  // ************** create rating and review ********************//
 router.post("/createRatingAndReviews" ,auth,isStudent, createRating)
 router.get("/getavgRating" , getAvgRating)
-router.get("/getallRating" , getAllRating)
+router.post("/getallRating" , getAllRating)
 
 
 

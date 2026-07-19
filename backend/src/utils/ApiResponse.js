@@ -8,7 +8,7 @@ class ApiResponse{
         this.statusCode = statusCode , 
         this.message = message , 
         this.data = data,
-        this.success = statusCode
+        this.success = true
     }
 }
 export{ApiResponse}

@@ -8,6 +8,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadImageToCloudinary } from "../utils/imageUploader.js";
 import { User } from "../models/User.js";
 import {convertSecondsToDuration} from "../utils/secToDuration.js"
+import {SubSection} from "../models/SubSection.js"
 
 const createCourse = asyncHandler(async(req , res)=> {
             // fetch data
@@ -357,10 +358,12 @@ const deleteCourse = asyncHandler(async(req , res)=>{
      console.log("course: ",course)
     const courseSections = course.courseContent
     console.log("courseSections: ",courseSections)
-    for (const sectionId of courseSections) {
+    for(const sectionId of courseSections) {
       // Delete sub-sections of the section
       const section = await Section.findById(sectionId)
+      
       if (section) {
+        console.log("section: ",section)
         const subSections = section.subSection
         for (const subSectionId of subSections) {
           await SubSection.findByIdAndDelete(subSectionId)

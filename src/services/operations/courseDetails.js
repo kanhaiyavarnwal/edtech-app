@@ -1,4 +1,4 @@
-import { courseEndpoints } from "../api";
+import { categories, courseEndpoints } from "../api";
 
 import {toast} from "react-hot-toast"
 import { apiConnector } from "../apiconnectors";
@@ -6,7 +6,7 @@ import { updateCompletedLectures } from "../../slices/viewCourseSlice"
 
 const {
      CREATE_COURSE_API,
-     COURSE_CATEGORIES_API ,
+    //  COURSE_CATEGORIES_API ,
      EDIT_COURSE_API,
      COURSE_DETAILS_API ,
      GET_ALL_INSTRUCTOR_COURSES_API,
@@ -74,8 +74,8 @@ export const fetchCourseDetails = async(courseId)=>{
 export const fetchCourseCategories = async () => {
   let result = []
   try {
-    const response = await apiConnector("GET", COURSE_CATEGORIES_API )
-    // console.log("COURSE_CATEGORIES_API API RESPONSE............", response)
+    const response = await apiConnector("GET", categories.COURSE_CATEGORIES_API )
+    console.log("COURSE_CATEGORIES_API API RESPONSE............", response)
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Course Categories")
     }
@@ -336,7 +336,7 @@ export const fetchInstructorCourses = async (token) => {
         Authorization: `Bearer ${token}`,
       }
     )
-    console.log("is instructor course api response: ", response)
+    // console.log("is instructor course api response: ", response)
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Instructor Courses")
     }
@@ -352,14 +352,14 @@ export const fetchInstructorCourses = async (token) => {
 
 export const deleteCourse = async (data, token) => {
   const toastId = toast.loading("Loading...")
-  console.log("delete api data: ",data)
-  console.log("delete api data: ",token)
+  // console.log("delete api data: ",data)
+  // console.log("delete api token: ",token)
   try {
-
-    const response = await apiConnector("DELETE",DELETE_COURSE_API, data, {
+  // console.log("delete api route: ",  DELETE_COURSE_API)
+    const response = await apiConnector("DELETE", DELETE_COURSE_API, data, {
       Authorization: `Bearer ${token}`,
     })
-    console.log("delete course api response: ", response)
+    // console.log("delete course api response: ", response)
     if (!response?.data?.success) {
       throw new Error("Could Not Delete Course")
     }

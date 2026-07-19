@@ -31,7 +31,7 @@ export const studentEndpoints = {
 export const courseEndpoints ={
     GET_ALL_COURSES_API : BASE_URL + "/course/getAllCourses",
     COURSE_DETAILS_API : BASE_URL + "/course/getCourseDetails",
-    COURSE_CATEGORIES_API : BASE_URL + "/course/getAllCategory",
+    
     EDIT_COURSE_API : BASE_URL + "/course/editCourse",
     
     CREATE_COURSE_API : BASE_URL + "/course/createCourse",
@@ -49,10 +49,13 @@ export const courseEndpoints ={
 
 }
 
+export const categories={
+COURSE_CATEGORIES_API : BASE_URL + "/course/getAllCategory",
+}
 // REST PART IS CREATE REVIEW API
 
 export const catalogData = {
-    CATALOG_PAGE_DATA_API : BASE_URL + "/course/category/categoryPageDetails",
+    CATALOG_PAGE_DATA_API : BASE_URL + "/course/categoryPageDetails",
 }
 
 export const contactUsEndpoint={

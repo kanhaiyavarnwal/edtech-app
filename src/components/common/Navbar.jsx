@@ -161,9 +161,14 @@ const sublinks = [
     link: "/catalog/python",
   },
   {
+    title: "genAi",
+    link: "/catalog/genAi",
+  },
+  {
     title: "Web Development",
     link: "/catalog/web-development",
   },
+
 ];
 
 export default function Navbar() {
