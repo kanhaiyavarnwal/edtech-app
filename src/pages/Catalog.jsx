@@ -1,3 +1,4 @@
+import  Error from "./Error"
 import React, { useEffect, useState } from "react";
 import Footer from "../components/common/Footer";
 import { useParams } from "react-router-dom";
@@ -5,14 +6,19 @@ import { apiConnector } from "../services/apiconnectors";
 import { categories } from "../services/api";
 import { getCatalogPageData } from "../services/operations/pageAndComponentsData";
 import { useSelector } from "react-redux";
-import  Error  from "./Error";
+import CourseSlider from "../components/core/Catalog/CourseSlider";
+import Course_Card from "../components/core/Catalog/Course_Card";
+
+
 export default function Catalog() {
       const { loading } = useSelector((state) => state.profile)
   const { catalogName } = useParams();
   const [catalogPageData, setCatalogPageData] = useState(null);
   const [categoryId, setCategoryId] = useState("");
+   const [active, setActive] = useState(1)
 
   useEffect(() => {
+    // this api for get all category
     const getCategories = async () => {
       const response = await apiConnector(
         "GET",
@@ -20,7 +26,8 @@ export default function Catalog() {
       );
       //   console.log("response in catalog: ",response)
       const rData = response?.data?.data;
-      //   console.log("rtable: ",rData)
+        console.log("rtable: ",rData)
+        // here we select on the basis of catalog name jo choose krenge usi ka id dega or use hm log niche use krenge
       const category_id = rData.filter(
         (ct) =>
           ct.name.replace(/\s+/g, "-").toLowerCase() ===
@@ -32,8 +39,10 @@ export default function Catalog() {
     };
     getCategories();
   }, [catalogName]);
-
+//  console.log("title ", catalogPageData.selectedCategory
+// .name)
   useEffect(() => {
+    // jo choose kiye hai hai usi ka pura page details dega wo 
     const getCategoryDetails = async () => {
       console.log("categoryId: ", categoryId);
       try {
@@ -57,40 +66,89 @@ export default function Catalog() {
           </div>
         )
       }
-    //   if (!loading && !catalogPageData.success) {
-    //     return <Error />
-    //   }
+      // if (!loading && !catalogPageData.success) {
+      //   return <Error />
+      // }
 
   return (
-    <div className="text-white">
-      <div>
-        <p></p>
-        <p></p>
-        <p></p>
-      </div>
-
-      <div>
-        {/* section 1 */}
-        <div>
-          <div>
-            <p>Most Popular</p>
-            <p>New</p>
+    <>
+          {/* Hero Section */}
+          <div className=" box-content bg-richblack-800 px-4">
+            <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
+              <p className="text-sm text-richblack-300">
+                {`Home / Catalog / `}
+                <span className="text-yellow-25">
+                  {catalogPageData?.selectedCategory?.name}
+                </span>
+              </p>
+              <p className="text-3xl text-richblack-5">
+                {catalogPageData?.selectedCategory?.name}
+              </p>
+              <p className="max-w-[870px] text-richblack-200">
+                {catalogPageData?.selectedCategory?.description}
+              </p>
+            </div>
           </div>
-          {/* <CourseSlider/> */}
-        </div>
-        {/* section2 */}
-        <div>
-          <p>Top courses</p>
-          <div>{/* <CourseSlider/> */}</div>
-        </div>
-        {/* section3 */}
-        <div>
-          <p>Frequently buy together</p>
-        </div>
-      </div>
-
-      <Footer />
-    </div>
+    
+          {/* Section 1 */}
+          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+            <div className="section_heading">Courses to get you started</div>
+            <div className="my-4 flex border-b border-b-richblack-600 text-sm">
+              <p
+                className={`px-4 py-2 ${
+                  active === 1
+                    ? "border-b border-b-yellow-25 text-yellow-25"
+                    : "text-richblack-50"
+                } cursor-pointer`}
+                onClick={() => setActive(1)}
+              >
+                Most Populer
+              </p>
+              <p
+                className={`px-4 py-2 ${
+                  active === 2
+                    ? "border-b border-b-yellow-25 text-yellow-25"
+                    : "text-richblack-50"
+                } cursor-pointer`}
+                onClick={() => setActive(2)}
+              >
+                New
+              </p>
+            </div>
+            <div>
+              <CourseSlider
+                Courses={catalogPageData?.selectedCategory?.courses}
+              />
+            </div>
+          </div>
+          {/* Section 2 */}
+          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+            <div className="section_heading">
+              Top courses in {catalogPageData?.differentCategory?.name}
+            </div>
+            <div className="py-8">
+              <CourseSlider
+                Courses={catalogPageData?.differentCategory?.courses}
+              />
+            </div>
+          </div>
+    
+          {/* Section 3 */}
+          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+            <div className="section_heading">Frequently Bought</div>
+            <div className="py-8">
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                {catalogPageData?.mostSellingCourses
+                  ?.slice(0, 4)
+                  .map((course, i) => (
+                    <Course_Card course={course} key={i} Height={"h-[400px]"} />
+                  ))}
+              </div>
+            </div>
+          </div>
+    
+          <Footer />
+        </>
   );
 }
 

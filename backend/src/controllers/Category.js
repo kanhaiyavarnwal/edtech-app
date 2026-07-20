@@ -28,7 +28,7 @@ const  createCategory = asyncHandler(async (req , res) =>{
 })
 
 const getAllCategory = asyncHandler(async(req , res)=>{
-    const allCategories = await Category.find({} , {name:true , description:true})
+    const allCategories = await Category.find({} , {name:true , description:true}).populate("courses")
      console.log("all categories; ",allCategories)
     res.status(200)
     .json(
@@ -101,9 +101,9 @@ const categoryPageDetails = asyncHandler(async(req ,  res)=>{
        .status(200)
        .json(
          new ApiResponse(200,
-                           selectedCategory,
+                          { selectedCategory,
                             differentCategory,
-                            mostSellingCourses
+                            mostSellingCourses}
                         ,"fetch the category of courses")
        )
 
