@@ -20,11 +20,12 @@ export default function Catalog() {
   useEffect(() => {
     // this api for get all category
     const getCategories = async () => {
+      console.log("categories api in catalog: ",categories.COURSE_CATEGORIES_API)
       const response = await apiConnector(
         "GET",
         categories.COURSE_CATEGORIES_API,
       );
-      //   console.log("response in catalog: ",response)
+        console.log("response in catalog: ",response)
       const rData = response?.data?.data;
         console.log("rtable: ",rData)
         // here we select on the basis of catalog name jo choose krenge usi ka id dega or use hm log niche use krenge

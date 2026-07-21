@@ -33,11 +33,12 @@ export default function Navbar() {
       setLoading(true);
 
       try {
+        console.log("category api: ",categories.COURSE_CATEGORIES_API)
         const res = await apiConnector(
           "GET",
           categories.COURSE_CATEGORIES_API
         );
-
+        console.log("res in navbar: ",res)
         setSubLinks(res.data.data);
       } catch (err) {
         console.log(err);
@@ -65,7 +66,7 @@ export default function Navbar() {
         {/* Logo */}
 
         <Link to="/">
-          <img src={logo} alt="Logo" width={160} />
+          <img src={logo} alt="Logo" width={160}  loading="lazy"/>
         </Link>
 
         {/* Desktop Navigation */}
@@ -128,7 +129,7 @@ export default function Navbar() {
             ))}
           </ul>
         </nav>
-
+            
         {/* Right Side */}
 
         <div className="flex items-center gap-4">
@@ -162,7 +163,7 @@ export default function Navbar() {
               </Link>
             </div>
           )}
-
+    
           {token && <ProfileDropdown />}
 
           <button
