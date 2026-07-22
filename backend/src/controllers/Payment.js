@@ -16,6 +16,8 @@ const capturePayment = asyncHandler(async(req , res)=>{
     //  const { course_id} = req.body;
      const userId = req.user.id;
      const {courses} = req.body;
+     console.log("req.body: ",req.body)
+     console.log("courses: ",courses)
 
     //validation
     // if(!course_id){
@@ -36,7 +38,7 @@ const capturePayment = asyncHandler(async(req , res)=>{
               // If the course is not found, return an error
               if(!course){
         
-         throw new ApiError(404, "could not find the course")
+         throw new ApiError(200, "could not find the course")
     
        }
 
@@ -84,8 +86,8 @@ const verifySignature = asyncHandler(async(req , res)=>{
    
 
     const{rozarpay_order_id , rozarpay_payment_id , rozarpay_signature , courses} = req.body;
-    
-    const userId = req.user?.id
+    console.log("req.body : ",req.body)
+    const userId = req.user?._id
 
     if(!rozarpay_order_id || ! rozarpay_payment_id || ! rozarpay_signature || ! courses || ! userId){
         throw new ApiError(401,"Payment failed")
@@ -117,7 +119,7 @@ const verifySignature = asyncHandler(async(req , res)=>{
 
 const sendPaymentSuccessfullPayment = asyncHandler(async(req , res)=>{
     const {orderId , paymentId , amount} = req.body;
-
+    console.log("req.bode : ",req.body)
     const userId = req.user?.id
 
     if(!orderId || !paymentId || ! amount || !userId){
@@ -138,14 +140,14 @@ const sendPaymentSuccessfullPayment = asyncHandler(async(req , res)=>{
         )
     } catch (error) {
         console.log("error in sending email", error.message)
-        throw new ApiError(400, "could not send email")
+        throw new ApiError(500, "could not send email")
         
     }
 }) 
 
 // enroll the student int he course
 
-const enrollStudent = asyncHandler(async(courses , userId , res)=>{
+const enrollStudents = asyncHandler(async(courses , userId , res)=>{
     if(!userId  || !courses){
         throw new ApiError(400,"please provide userId, courses")
 
@@ -201,4 +203,4 @@ const enrollStudent = asyncHandler(async(courses , userId , res)=>{
 
 })
 
-export {capturePayment , verifySignature,sendPaymentSuccessfullPayment,enrollStudent}
+export {capturePayment , verifySignature,sendPaymentSuccessfullPayment,enrollStudents}
