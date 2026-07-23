@@ -12,7 +12,7 @@ import { courseEnrollmentEmail } from "../mail/templates/courseEnrollmentEmail.j
 
 const sentOtp = asyncHandler(async (req, res) => {
   const { email } = req.body;
-  console.log("email from  req.body: ", email);
+  // console.log("email from  req.body: ", email);
 
   const checkUserPresent = await User.findOne({ email });
 
@@ -28,7 +28,7 @@ const sentOtp = asyncHandler(async (req, res) => {
   console.log("otp: -> :", otp);
 
   const result = await OTP.findOne({ otp: otp });
-  console.log("first find the otp:- ", result);
+  // console.log("first find the otp:- ", result);
 
   while (result) {
     otp = otpGenerator.generate(6, {
@@ -47,7 +47,7 @@ const sentOtp = asyncHandler(async (req, res) => {
   // create an entry in db for otp
   const otpBody = await OTP.create(otpPayload);
 
-  console.log("otp body -> :", otpBody);
+  // console.log("otp body -> :", otpBody);
   return res
     .status(200)
     .json(new ApiResponse(201, {}, "otp sent your on email"));
@@ -73,8 +73,8 @@ const signUp = asyncHandler(async (req, res) => {
     throw new ApiError(403, "All fields are required");
   }
   // validate the password
-  console.log("password",password)
-  console.log("c->password",confirmPassword)
+  // console.log("password",password)
+  // console.log("c->password",confirmPassword)
 
   if (password !== confirmPassword) {
     throw new ApiError(400, "password and confirmpassword not match");
@@ -90,7 +90,7 @@ const signUp = asyncHandler(async (req, res) => {
     .sort({ createdAt: -1 })
     .limit(1);
 
-  console.log("recent otp ->: ", recentOtp);
+  // console.log("recent otp ->: ", recentOtp);
 
   if (recentOtp.length === 0) {
     throw new ApiError(400, "otp not found");
@@ -149,7 +149,7 @@ const login = asyncHandler(async (req, res) => {
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       // yha errror aayega
-      expiresIn: "8h",
+      expiresIn: "16h",
     });
     user.token = token;
     user.password = undefined;
@@ -163,7 +163,7 @@ const login = asyncHandler(async (req, res) => {
       .cookie("token", token, options)
       .status(200)
       .json(new ApiResponse(201, {user, token} , "login successfully"));
-      console.log("token:after login ",token , options)
+      // console.log("token:after login ",token , options)
   } else {
     return res.status(401).json({
       success: false,
@@ -199,7 +199,7 @@ const changePassword = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findById(req.user?.id);
-  console.log("user after finding for change password -> :", user.password);
+  // console.log("user after finding for change password -> :", user.password);
 
   if (!user) {
     throw new ApiError(404, "user not found");

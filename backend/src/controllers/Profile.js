@@ -156,7 +156,7 @@ const getAllUserDetails = asyncHandler(async(req ,res)=>{
     const courseDetails = await Course.find({instructor : req.user?.id})
 
     const courseData = courseDetails.map((course)=>{
-        const totalStudentEnrolled = course.studentEnrolled.length
+        const totalStudentEnrolled = course.studentsEnrolled.length
         const totalAmountGenerate = totalStudentEnrolled * course.price
 
        // create a new object with the addittional fields

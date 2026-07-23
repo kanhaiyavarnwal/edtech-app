@@ -59,7 +59,7 @@ export async function buyCourse(token,user, courses,  navigate, dispatch) {
         //options
         console.log("rozarpaysecret :", process.env.REACT_APP_RAZORPAY_KEY )
         const options = {
-            key: process.env.REACT_APP_RAZORPAY_KEY,
+             key: process.env.REACT_APP_RAZORPAY_KEY,
             currency: orderResponse.data.data.currency,
             amount: `${orderResponse.data.data.amount}`,
             order_id:orderResponse.data.data.id,

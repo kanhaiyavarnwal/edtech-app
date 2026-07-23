@@ -33,9 +33,9 @@ const createCourse = asyncHandler(async(req , res)=> {
       const tag = JSON.parse(_tag);
       const instructions = JSON.parse(_instructions);
 
-        console.log("tag ", tag)
-        console.log("instructions ", instructions)
-        console.log("req files",req.files)
+        // console.log("tag ", tag)
+        // console.log("instructions ", instructions)
+        // console.log("req files",req.files)
     // validations
    if(  
     !courseName  ||
@@ -62,7 +62,7 @@ const createCourse = asyncHandler(async(req , res)=> {
       throw new ApiError(404,"Instructor details not found")
     }
     
-    console.log('instructorDetaisl: ',instructorDetails)
+    // console.log('instructorDetaisl: ',instructorDetails)
 
     // here the category is id  if not clear then -> check now your course model 
     const categoryDetails = await Category.findById(category)
@@ -70,8 +70,8 @@ const createCourse = asyncHandler(async(req , res)=> {
          throw new ApiError(404, "category details not found")
     }
 
-    console.log("inside create category categoryDetails ",categoryDetails)
-   console.log("before the uploadimage",thumbnail.mimetype)
+  //   console.log("inside create category categoryDetails ",categoryDetails)
+  //  console.log("before the uploadimage",thumbnail.mimetype)
 
     // upload on cloudinary
     const thumbnailImage  = await uploadImageToCloudinary(
@@ -80,8 +80,8 @@ const createCourse = asyncHandler(async(req , res)=> {
       if(!thumbnailImage){
         throw new ApiError(404,"image not found")
       }
-         console.log("after the uploadimage")
-      console.log("uploaded image url ",thumbnailImage.secure_url)
+      //    console.log("after the uploadimage")
+      // console.log("uploaded image url ",thumbnailImage.secure_url)
     // create an entry for new course
 
     const newCourse = await Course.create({
@@ -115,7 +115,7 @@ const createCourse = asyncHandler(async(req , res)=> {
                         }},{new:true}
      )
 
-     console.log("categoryDetails2-> ",categoryDetails2)
+    //  console.log("categoryDetails2-> ",categoryDetails2)
 
     return res
     .status(200)
@@ -139,7 +139,7 @@ const editCourse = asyncHandler(async(req, res)=>{
 
   // If Thumbnail Image is found, update it
     if (req.files) {
-      console.log("thumbnail update")
+      // console.log("thumbnail update")
       const thumbnail = req.files.thumbnailImage
       const thumbnailImage = await uploadImageToCloudinary(
         thumbnail,
@@ -148,13 +148,13 @@ const editCourse = asyncHandler(async(req, res)=>{
       course.thumbnail = thumbnailImage.secure_url
     }
 
-for (const key of Object.keys(updates)) {
-  if (key === "tag" || key === "instructions") {
-    course[key] = JSON.parse(updates[key]);
-  } else {
-    course[key] = updates[key];
+  for (const key of Object.keys(updates)) {
+    if (key === "tag" || key === "instructions") {
+      course[key] = JSON.parse(updates[key]);
+    } else {
+      course[key] = updates[key];
+    }
   }
-}
 
      await course.save()
 
@@ -242,8 +242,8 @@ const getCourseDetails = asyncHandler(async(req,res)=>{
 
      const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
 
-    console.log("all course details : ",courseDetails)
-    console.log("total duration of this course details : ",totalDuration)
+    // console.log("all course details : ",courseDetails)
+    // console.log("total duration of this course details : ",totalDuration)
 
     return res
     .status(200)

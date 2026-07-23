@@ -1,5 +1,5 @@
 import {v2 as cloudinary} from "cloudinary"
-import { asyncHandler } from "./asyncHandler.js";
+
 import { ApiError } from "./ApiError.js";
 
 const uploadImageToCloudinary = async ( file , folder ,height ,quality) =>{
@@ -17,7 +17,7 @@ try {
         //  console.log("file.tempFilePath: ",file.tempFilePath)
         //  console.log("file jo bolrha hai missing hai  ",file)
         const result = await cloudinary.uploader.upload(file.tempFilePath, options);
-        // console.log("result ",result)
+        // console.log("result ",result) 
         return result;
 } catch (error) {
     console.log(error)
