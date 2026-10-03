@@ -25,7 +25,7 @@ export function sendOtp(email,navigate){
                 email,
                 checkUserPresent:true,
             })
-          
+          console.log("response in otp: ",response)
 
             if(!response.data.success){
                 throw new Error(response.data.message)
@@ -35,7 +35,7 @@ export function sendOtp(email,navigate){
            
 
         }catch(err){
-            console.log("send otp api err in the operation -> ",err)
+            console.log("send otp api err in the operation -> ",err.message)
             toast.error(err.message)
         }
         dispatch(setLoading(false))

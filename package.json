@@ -34,8 +34,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "backend": "cd backend && npm run dev",
-    "dev": "concurrently -n \"frontend,backend\" -c \"bgRed,bgWhite\" \"npm start\" \"npm run backend\""
+    "dev": "npm start"
+
+    
   },
   "eslintConfig": {
     "extends": [

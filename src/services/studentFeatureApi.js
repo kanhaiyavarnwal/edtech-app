@@ -57,7 +57,7 @@ export async function buyCourse(token,user, courses,  navigate, dispatch) {
         }
         console.log("print payment order response api : ", orderResponse);
         //options
-        console.log("rozarpaysecret :", process.env.REACT_APP_RAZORPAY_KEY )
+        // console.log("rozarpaysecret :", process.env.REACT_APP_RAZORPAY_KEY )
         const options = {
              key: process.env.REACT_APP_RAZORPAY_KEY,
             currency: orderResponse.data.data.currency,
